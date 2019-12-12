@@ -48,10 +48,12 @@ using namespace Reality;
 void LoadShaders(ECSWorld& world);
 void LoadModels(ECSWorld& world);
 void MakeABridge(ECSWorld& world);
+void MakeABridgeV2(ECSWorld& world);
 void MakeFlight(ECSWorld& world);
 void TestContacts(ECSWorld& world);
 void TestCollision(ECSWorld& world);
 void SetupLights(ECSWorld& world);
+glm::vec3 FindAveragePoint(const glm::vec3& pt1, const glm::vec3& pt2, const glm::vec3& pt3, const glm::vec3& pt4);
 
 int main()
 {
@@ -71,8 +73,9 @@ int main()
 
 	SetupLights(world);
 
-	MakeFlight(world);
+	//MakeFlight(world);
 	//MakeABridge(world);
+	MakeABridgeV2(world);
 	//TestContacts(world);
 	//TestCollision(world);
 
@@ -572,6 +575,254 @@ void MakeABridge(ECSWorld & world)
 
 }
 
+void MakeABridgeV2(ECSWorld & world)
+{
+	// ------------------------------------------------------------------------
+	auto eFixed2 = world.createEntity();
+	eFixed2.addComponent<TransformComponent>(Vector3(20, 40, 0));
+	//eFixed2.addComponent<ParticleComponent>(10000000, Vector3(0, 0, 0), 0);
+	//eFixed2.addComponent<SphereComponent>(1);
+
+	auto eLowerPoint2 = world.createEntity();
+	eLowerPoint2.addComponent<TransformComponent>(Vector3(20, 30, 0));
+	//eLowerPoint2.addComponent<SphereComponent>(1);
+	eLowerPoint2.addComponent<ParticleComponent>(10);
+
+	auto eCable2 = world.createEntity();
+	eCable2.addComponent<CableComponent>(eFixed2, eLowerPoint2, 10);
+
+
+	// ------------------------------------------------------------------------
+	auto eFixed3 = world.createEntity();
+	eFixed3.addComponent<TransformComponent>(Vector3(10, 40, 0));
+	//eFixed3.addComponent<ParticleComponent>(10000000, Vector3(0, 0, 0), 0);
+	//eFixed3.addComponent<SphereComponent>(1);
+
+	auto eLowerPoint3 = world.createEntity();
+	eLowerPoint3.addComponent<TransformComponent>(Vector3(10, 30, 0));
+	//eLowerPoint3.addComponent<SphereComponent>(1);
+	eLowerPoint3.addComponent<ParticleComponent>(10);
+
+	auto eCable3 = world.createEntity();
+	eCable3.addComponent<CableComponent>(eFixed3, eLowerPoint3, 10);
+
+
+	// ------------------------------------------------------------------------
+	auto eFixed4 = world.createEntity();
+	eFixed4.addComponent<TransformComponent>(Vector3(0, 40, 0));
+	//eFixed4.addComponent<ParticleComponent>(10000000, Vector3(0, 0, 0), 0);
+	//eFixed4.addComponent<SphereComponent>(1);
+
+	auto eLowerPoint4 = world.createEntity();
+	eLowerPoint4.addComponent<TransformComponent>(Vector3(0, 30, 0));
+	//eLowerPoint4.addComponent<SphereComponent>(1);
+	eLowerPoint4.addComponent<ParticleComponent>(10);
+
+	auto eCable4 = world.createEntity();
+	eCable4.addComponent<CableComponent>(eFixed4, eLowerPoint4, 10);
+
+
+	// ------------------------------------------------------------------------
+	auto eFixed5 = world.createEntity();
+	eFixed5.addComponent<TransformComponent>(Vector3(-10, 40, 0));
+	//eFixed5.addComponent<ParticleComponent>(10000000, Vector3(0, 0, 0), 0);
+	//eFixed5.addComponent<SphereComponent>(1);
+
+	auto eLowerPoint5 = world.createEntity();
+	eLowerPoint5.addComponent<TransformComponent>(Vector3(-10, 30, 0));
+	//eLowerPoint5.addComponent<SphereComponent>(1);
+	eLowerPoint5.addComponent<ParticleComponent>(10);
+
+	auto eCable5 = world.createEntity();
+	eCable5.addComponent<CableComponent>(eFixed5, eLowerPoint5, 10);
+
+
+	// ------------------------------------------------------------------------
+	auto eFixed6 = world.createEntity();
+	eFixed6.addComponent<TransformComponent>(Vector3(-20, 40, 0));
+	//eFixed6.addComponent<ParticleComponent>(10000000, Vector3(0, 0, 0), 0);
+	//eFixed6.addComponent<SphereComponent>(1);
+
+	auto eLowerPoint6 = world.createEntity();
+	eLowerPoint6.addComponent<TransformComponent>(Vector3(-20, 30, 0));
+	//eLowerPoint6.addComponent<SphereComponent>(1);
+	eLowerPoint6.addComponent<ParticleComponent>(10);
+
+	auto eCable6 = world.createEntity();
+	eCable6.addComponent<CableComponent>(eFixed6, eLowerPoint6, 10);
+
+	auto eRod2 = world.createEntity();
+	eRod2.addComponent<RodComponent>(eLowerPoint2, eLowerPoint3, 10);
+	auto eRod3 = world.createEntity();
+	eRod3.addComponent<RodComponent>(eLowerPoint3, eLowerPoint4, 10);
+	auto eRod4 = world.createEntity();
+	eRod4.addComponent<RodComponent>(eLowerPoint4, eLowerPoint5, 10);
+	auto eRod5 = world.createEntity();
+	eRod5.addComponent<RodComponent>(eLowerPoint5, eLowerPoint6, 10);
+
+	// ------------------------------------------------------------------------
+	auto eFixed12 = world.createEntity();
+	eFixed12.addComponent<TransformComponent>(Vector3(20, 40, 10));
+	//eFixed12.addComponent<ParticleComponent>(10000000, Vector3(0, 0, 0), 0);
+	//eFixed12.addComponent<SphereComponent>(1);
+
+	auto eLowerPoint12 = world.createEntity();
+	eLowerPoint12.addComponent<TransformComponent>(Vector3(20, 30, 10));
+	//eLowerPoint12.addComponent<SphereComponent>(1);
+	eLowerPoint12.addComponent<ParticleComponent>(10);
+
+	auto eCable12 = world.createEntity();
+	eCable12.addComponent<CableComponent>(eFixed12, eLowerPoint12, 10);
+
+	// ------------------------------------------------------------------------
+	auto eFixed13 = world.createEntity();
+	eFixed13.addComponent<TransformComponent>(Vector3(10, 40, 10));
+	//eFixed13.addComponent<ParticleComponent>(10000000, Vector3(0, 0, 0), 0);
+	//eFixed13.addComponent<SphereComponent>(1);
+
+	auto eLowerPoint13 = world.createEntity();
+	eLowerPoint13.addComponent<TransformComponent>(Vector3(10, 30, 10));
+	//eLowerPoint13.addComponent<SphereComponent>(1);
+	eLowerPoint13.addComponent<ParticleComponent>(10);
+
+	auto eCable13 = world.createEntity();
+	eCable13.addComponent<CableComponent>(eFixed13, eLowerPoint13, 10);
+
+	// ------------------------------------------------------------------------
+	auto eFixed14 = world.createEntity();
+	eFixed14.addComponent<TransformComponent>(Vector3(0, 40, 10));
+	//eFixed14.addComponent<ParticleComponent>(10000000, Vector3(0, 0, 0), 0);
+	//eFixed14.addComponent<SphereComponent>(1);
+
+	auto eLowerPoint14 = world.createEntity();
+	eLowerPoint14.addComponent<TransformComponent>(Vector3(0, 30, 10));
+	//eLowerPoint14.addComponent<SphereComponent>(1);
+	eLowerPoint14.addComponent<ParticleComponent>(10);
+
+	auto eCable14 = world.createEntity();
+	eCable14.addComponent<CableComponent>(eFixed14, eLowerPoint14, 10);
+
+	// ------------------------------------------------------------------------
+	auto eFixed15 = world.createEntity();
+	eFixed15.addComponent<TransformComponent>(Vector3(-10, 40, 10));
+	//eFixed15.addComponent<ParticleComponent>(10000000, Vector3(0, 0, 0), 0);
+	//eFixed15.addComponent<SphereComponent>(1);
+
+	auto eLowerPoint15 = world.createEntity();
+	eLowerPoint15.addComponent<TransformComponent>(Vector3(-10, 30, 10));
+	//eLowerPoint15.addComponent<SphereComponent>(1);
+	eLowerPoint15.addComponent<ParticleComponent>(10);
+
+	auto eCable15 = world.createEntity();
+	eCable15.addComponent<CableComponent>(eFixed15, eLowerPoint15, 10);
+
+	// ------------------------------------------------------------------------
+	auto eFixed16 = world.createEntity();
+	eFixed16.addComponent<TransformComponent>(Vector3(-20, 40, 10));
+	//eFixed16.addComponent<ParticleComponent>(10000000, Vector3(0, 0, 0), 0);
+	//eFixed16.addComponent<SphereComponent>(1);
+
+	auto eLowerPoint16 = world.createEntity();
+	eLowerPoint16.addComponent<TransformComponent>(Vector3(-20, 30, 10));
+	//eLowerPoint16.addComponent<SphereComponent>(1);
+	eLowerPoint16.addComponent<ParticleComponent>(10);
+
+	auto eCable16 = world.createEntity();
+	eCable16.addComponent<CableComponent>(eFixed16, eLowerPoint16, 10);
+
+
+	auto eRod12 = world.createEntity();
+	eRod12.addComponent<RodComponent>(eLowerPoint12, eLowerPoint13, 10);
+	auto eRod13 = world.createEntity();
+	eRod13.addComponent<RodComponent>(eLowerPoint13, eLowerPoint14, 10);
+	auto eRod14 = world.createEntity();
+	eRod14.addComponent<RodComponent>(eLowerPoint14, eLowerPoint15, 10);
+	auto eRod15 = world.createEntity();
+	eRod15.addComponent<RodComponent>(eLowerPoint15, eLowerPoint16, 10);
+
+	auto eRod212 = world.createEntity();
+	eRod212.addComponent<RodComponent>(eLowerPoint2, eLowerPoint12, 10);
+	auto eRod616 = world.createEntity();
+	eRod616.addComponent<RodComponent>(eLowerPoint6, eLowerPoint16, 10);
+
+
+	// find center of rectangle
+	auto pt2 = eLowerPoint2.getComponent<TransformComponent>().position;
+	auto pt3 = eLowerPoint3.getComponent<TransformComponent>().position;
+	auto pt4 = eLowerPoint4.getComponent<TransformComponent>().position;
+	auto pt5 = eLowerPoint5.getComponent<TransformComponent>().position;
+	auto pt6 = eLowerPoint6.getComponent<TransformComponent>().position;
+
+	auto pt12 = eLowerPoint12.getComponent<TransformComponent>().position;
+	auto pt13 = eLowerPoint13.getComponent<TransformComponent>().position;
+	auto pt14 = eLowerPoint14.getComponent<TransformComponent>().position;
+	auto pt15 = eLowerPoint15.getComponent<TransformComponent>().position;
+	auto pt16 = eLowerPoint16.getComponent<TransformComponent>().position;
+
+	const glm::vec3 center1 = FindAveragePoint(pt2, pt3, pt12, pt13);
+	const glm::vec3 center2 = FindAveragePoint(pt3, pt4, pt13, pt14);
+	const glm::vec3 center3 = FindAveragePoint(pt4, pt5, pt14, pt15);
+	const glm::vec3 center4 = FindAveragePoint(pt5, pt6, pt15, pt16);
+	
+	auto floor1 = world.createEntity();
+	floor1.addComponent<TransformComponentV2>(center1);
+	floor1.addComponent<RigidBodyComponent>(10.0f, 0.1f, 0.1f, Vector3(0, 0, 0), Vector3(0, 0, 0), 0);
+	auto floorCol1 = world.createEntity();
+	floorCol1.addComponent<BoxColliderComponent>(floor1, Vector3(10, 0.5f, 10));
+
+	auto floor2 = world.createEntity();
+	floor2.addComponent<TransformComponentV2>(center2);
+	floor2.addComponent<RigidBodyComponent>(10.0f, 0.1f, 0.1f, Vector3(0, 0, 0), Vector3(0, 0, 0), 0);
+	auto floorCol2 = world.createEntity();
+	floorCol2.addComponent<BoxColliderComponent>(floor2, Vector3(10, 0.5f, 10));
+
+	auto floor3 = world.createEntity();
+	floor3.addComponent<TransformComponentV2>(center3);
+	floor3.addComponent<RigidBodyComponent>(10.0f, 0.1f, 0.1f, Vector3(0, 0, 0), Vector3(0, 0, 0), 0);
+	auto floorCol3 = world.createEntity();
+	floorCol3.addComponent<BoxColliderComponent>(floor3, Vector3(10, 0.5f, 10));
+
+	auto floor4 = world.createEntity();
+	floor4.addComponent<TransformComponentV2>(center4);
+	floor4.addComponent<RigidBodyComponent>(10.0f, 0.1f, 0.1f, Vector3(0, 0, 0), Vector3(0, 0, 0), 0);
+	auto floorCol4 = world.createEntity();
+	floorCol4.addComponent<BoxColliderComponent>(floor4, Vector3(10, 0.5f, 10));
+
+	//const glm::vec3 point1 = glm::vec3(eLowerPoint2.getComponent<TransformComponent>().position.x, eLowerPoint2.getComponent<TransformComponent>().position.y, eLowerPoint2.getComponent<TransformComponent>().position.z);
+	//const glm::vec3 point2 = glm::vec3(eLowerPoint3.getComponent<TransformComponent>().position.x, eLowerPoint3.getComponent<TransformComponent>().position.y, eLowerPoint3.getComponent<TransformComponent>().position.z);
+	//const glm::vec3 point3 = glm::vec3(eLowerPoint4.getComponent<TransformComponent>().position.x, eLowerPoint4.getComponent<TransformComponent>().position.y, eLowerPoint4.getComponent<TransformComponent>().position.z);
+	//const glm::vec3 point4 = glm::vec3(eLowerPoint5.getComponent<TransformComponent>().position.x, eLowerPoint5.getComponent<TransformComponent>().position.y, eLowerPoint5.getComponent<TransformComponent>().position.z);
+	//const glm::vec3 point5 = glm::vec3(eLowerPoint6.getComponent<TransformComponent>().position.x, eLowerPoint6.getComponent<TransformComponent>().position.y, eLowerPoint6.getComponent<TransformComponent>().position.z);
+
+
+	//const glm::vec3 point12 = glm::vec3(eLowerPoint12.getComponent<TransformComponent>().position.x, eLowerPoint12.getComponent<TransformComponent>().position.y, eLowerPoint12.getComponent<TransformComponent>().position.z);
+	//const glm::vec3 point13 = glm::vec3(eLowerPoint13.getComponent<TransformComponent>().position.x, eLowerPoint13.getComponent<TransformComponent>().position.y, eLowerPoint13.getComponent<TransformComponent>().position.z);
+	//const glm::vec3 point14 = glm::vec3(eLowerPoint14.getComponent<TransformComponent>().position.x, eLowerPoint14.getComponent<TransformComponent>().position.y, eLowerPoint14.getComponent<TransformComponent>().position.z);
+	//const glm::vec3 point15 = glm::vec3(eLowerPoint15.getComponent<TransformComponent>().position.x, eLowerPoint15.getComponent<TransformComponent>().position.y, eLowerPoint15.getComponent<TransformComponent>().position.z);
+	//const glm::vec3 point16 = glm::vec3(eLowerPoint16.getComponent<TransformComponent>().position.x, eLowerPoint16.getComponent<TransformComponent>().position.y, eLowerPoint16.getComponent<TransformComponent>().position.z);
+
+	//Color bridgeColour = Color::Cyan;
+
+	//auto triangle1 = world.createEntity();
+	//triangle1.addComponent<DebugDrawTriangleComponent>(point1, point2, point12, bridgeColour);
+	//auto triangle2 = world.createEntity();
+	//triangle2.addComponent<DebugDrawTriangleComponent>(point2, point13, point12, bridgeColour);
+	//auto triangle3 = world.createEntity();
+	//triangle3.addComponent<DebugDrawTriangleComponent>(point2, point3, point14, bridgeColour);
+	//auto triangle4 = world.createEntity();
+	//triangle4.addComponent<DebugDrawTriangleComponent>(point2, point13, point14, bridgeColour);
+	//auto triangle5 = world.createEntity();
+	//triangle5.addComponent<DebugDrawTriangleComponent>(point4, point3, point14, bridgeColour);
+	//auto triangle6 = world.createEntity();
+	//triangle6.addComponent<DebugDrawTriangleComponent>(point4, point15, point14, bridgeColour);
+	//auto triangle7 = world.createEntity();
+	//triangle7.addComponent<DebugDrawTriangleComponent>(point4, point5, point15, bridgeColour);
+	//auto triangle8 = world.createEntity();
+	//triangle8.addComponent<DebugDrawTriangleComponent>(point5, point15, point16, bridgeColour);
+
+}
+
+
 
 void TestContacts(ECSWorld& world)
 {
@@ -715,3 +966,12 @@ void SetupLights(ECSWorld& world)
 		}
 	}
 }
+
+glm::vec3 FindAveragePoint(const glm::vec3& pt1, const glm::vec3& pt2, const glm::vec3& pt3, const glm::vec3& pt4)
+{
+	float avg_x = (pt1.x + pt2.x + pt3.x + pt4.x) / 4;
+	float avg_y = (pt1.y + pt2.y + pt3.y + pt4.y) / 4;
+	float avg_z = (pt1.z + pt2.z + pt3.z + pt4.z) / 4;
+	return glm::vec3(avg_x, avg_y, avg_z);
+}
+
